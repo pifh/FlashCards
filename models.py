@@ -1,3 +1,5 @@
+from random import *
+
 class Carte:
   def __init__(self, id, recto, verso, isReversible):
       self.id = id
@@ -36,6 +38,11 @@ class Session:
   def ajoute_carte(self, carte):
     self.compartiments[0].append(carte)
 
+  def ajoute_paquet(self, paquet):
+    for n in range(len(paquet.listeCartes)):
+      self.ajoute_carte(paquet.listeCartes[n])
+
+
   def suprimer_carte(self, carte):
     for n in range (0, len(self.compartiments)-1):
       self.compartiments[n].remove(carte)
@@ -64,8 +71,13 @@ class Session:
     for compartiment in self.compartiments:
       for carte in compartiment:
         carte.vue = False 
-
-
+  
+  def nonVue(self, compartiments):
+    LnonVue = []
+    for carte in compartiments:
+      if not carte.vue  :
+        LnonVue.append(carte)
+    return LnonVue
 
 
 def printSession(session: Session) :
@@ -74,7 +86,7 @@ def printSession(session: Session) :
     for carte in session.compartiments[i] :
       print("    "+carte.recto)
 
-paquet = Paquet(1, [
+paquet1 = Paquet(1, [
   CarteUtil(1, "Question 1", "Réponse 1", True),
   CarteUtil(2, "Question 2", "Réponse 2", True),
   CarteUtil(3, "Question 3", "Réponse 3", True),
@@ -87,19 +99,28 @@ paquet = Paquet(1, [
   CarteUtil(10, "Question 10", "Réponse 10", True)
 ])
 
-carte1 = paquet.listeCartes[0]
+
 masession = Session()
 
-masession.ajoute_carte(carte1)
-printSession(masession)
-for n in range(0, len(masession.compartiments)):
-  masession.augmenter(carte1)
-  printSession(masession)
-  print("stop"+str(n))
-masession.baisser(carte1)
-printSession(masession)
+def tire_une_carte():
+  for n in range(len(masession.compartiments)):
+    print("compartiment "+ (str(n+1)))
+    lnonvue = masession.nonVue(masession.compartiments[n]) 
+    if len(lnonvue) == 0:
+      print("rien") 
+    while (len(lnonvue) > 0) :
+      i = randint(0, len(lnonvue)-1)
+      print(lnonvue[i].recto)
+      input()
+      print(lnonvue[i].verso)
+      validation = input("+ ou - ?")
+      if (validation == "+"):
+        masession.augmenter(lnonvue[i])
+      else:
+        masession.baisser(lnonvue[i])
+      lnonvue = masession.nonVue(masession.compartiments[n])
 
-
-
+masession.ajoute_paquet(paquet1)
+tire_une_carte()
 
 
