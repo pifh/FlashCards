@@ -102,25 +102,37 @@ paquet1 = Paquet(1, [
 
 masession = Session()
 
-def tire_une_carte():
+def tire_un_compartiment(config):
+  print("compartiment "+ (str(config+1)))
+  lnonvue = masession.nonVue(masession.compartiments[config]) 
+  if len(lnonvue) == 0:
+    print("rien") 
+  while (len(lnonvue) > 0) :
+    i = randint(0, len(lnonvue)-1)
+    print(lnonvue[i].recto)
+    input()
+    print(lnonvue[i].verso)
+    validation = input("+ ou - ?")
+    if (validation == "+"):
+      masession.augmenter(lnonvue[i])
+    else:
+      masession.baisser(lnonvue[i])
+    lnonvue = masession.nonVue(masession.compartiments[config])
+
+def tire_une_carte(j = 0):
   for n in range(len(masession.compartiments)):
-    print("compartiment "+ (str(n+1)))
-    lnonvue = masession.nonVue(masession.compartiments[n]) 
-    if len(lnonvue) == 0:
-      print("rien") 
-    while (len(lnonvue) > 0) :
-      i = randint(0, len(lnonvue)-1)
-      print(lnonvue[i].recto)
-      input()
-      print(lnonvue[i].verso)
-      validation = input("+ ou - ?")
-      if (validation == "+"):
-        masession.augmenter(lnonvue[i])
-      else:
-        masession.baisser(lnonvue[i])
-      lnonvue = masession.nonVue(masession.compartiments[n])
+    if j % masession.configCompartiments[n] == 0:
+      tire_un_compartiment(n)
+
+  
+
+
+
 
 masession.ajoute_paquet(paquet1)
-tire_une_carte()
+for n in range(721):
+  tire_une_carte(n)
+  masession.initVue()
+
 
 
