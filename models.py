@@ -19,7 +19,7 @@ class Session:
     self.initCompartiments()
 
   def initCompartiments(self) :
-    self.compartiments = [[] for _ in range(self.configCompartiments)]
+    self.compartiments = [[] for _ in range(len(self.configCompartiments))]
 
 
   def getQuestion() :
@@ -28,3 +28,5 @@ class Session:
   def valideQuestion(question) :
     return
 
+  def ajoute_carte(self, carte):
+    self.compartiments[0].append(carte)
