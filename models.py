@@ -3,7 +3,7 @@ class Carte:
       self.recto = recto
       self.verso = verso
 
-
+#essai
 class Session:
   def __init__(self, cartes = [], configCompartiments = [1, 2, 8, 16, 32, 180, 360]):
     self.cartes = cartes
