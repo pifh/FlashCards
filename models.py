@@ -6,9 +6,9 @@ class Carte:
       self.isReversible = isReversible
 
 class CarteUtil(Carte):
-  def __init__(self, id, recto, verso, isReversible, date=0):
+  def __init__(self, id, recto, verso, isReversible, vue=False):
     Carte.__init__(self, id, recto, verso, isReversible)
-    self.date = date
+    self.vue = vue
 
 class Paquet:
   def __init__(self, id, listeCartes = []):
@@ -41,6 +41,7 @@ class Session:
       self.compartiments[n].remove(carte)
 
   def augmenter(self, carte):
+    carte.vue = True
     for n in range (len(self.compartiments)):
       if carte in self.compartiments[n]:
         if not ((n+1) > len(self.compartiments)-1):
@@ -49,11 +50,23 @@ class Session:
         break
 
   def baisser(self, carte):
+    carte.vue = True
     for n in range (len(self.compartiments)):
       if carte in self.compartiments[n]:
         if not (n == 0):
           self.compartiments[n-1].append(carte)
           self.compartiments[n].remove(carte)
+
+  def getJour(self):
+    return 1
+  
+  def initVue(self):
+    for compartiment in self.compartiments:
+      for carte in compartiment:
+        carte.vue = False 
+
+
+
 
 def printSession(session: Session) :
   for i in range(len(session.compartiments)):
@@ -85,7 +98,7 @@ for n in range(0, len(masession.compartiments)):
   print("stop"+str(n))
 masession.baisser(carte1)
 printSession(masession)
-print(carte1.date)
+
 
 
 
