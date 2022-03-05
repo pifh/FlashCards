@@ -1,4 +1,6 @@
+from time import *
 from random import *
+from datetime import datetime
 
 class Carte:
   def __init__(self, id, recto, verso, isReversible):
@@ -24,6 +26,12 @@ class Session:
     self.cartes = cartes
     self.configCompartiments = configCompartiments
     self.initCompartiments()
+    self.dateCreation = Session.getJour()
+
+  def getJour():
+    ts = time()
+    jour = int(ts // 86400)
+    return jour
 
   def initCompartiments(self) :
     self.compartiments = [[] for _ in range(len(self.configCompartiments))]
@@ -64,8 +72,6 @@ class Session:
           self.compartiments[n-1].append(carte)
           self.compartiments[n].remove(carte)
 
-  def getJour(self):
-    return 1
   
   def initVue(self):
     for compartiment in self.compartiments:
@@ -131,8 +137,10 @@ def tire_une_carte(j = 0):
 
 masession.ajoute_paquet(paquet1)
 for n in range(721):
-  tire_une_carte(n)
+  tire_une_carte(Session.getJour()-masession.dateCreation)
   masession.initVue()
 
+
+print(Session.getjour)
 
 
